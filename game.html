@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Snake Game</title>
+
+
+</head>
+
+<body>
+
+    <canvas id="snakeboard" width="600" height="600"></canvas>
+    <h1>Current Score: <span id="score"></span></h1>
+
+    <style>
+        #snakeboard {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</body>
+
+<script>
+    const board_border = 'black';
+    const board_background = "black";
+    const snake_col = 'white';
+    const snake_border = 'darkblue';
+    const target_col = 'orange';
+    const width = 600;
+    const height = 600;
+
+    let snake = [{
+            x: 200,
+            y: 200
+        },
+        {
+            x: 190,
+            y: 200
+        },
+        {
+            x: 180,
+            y: 200
+        },
+        {
+            x: 170,
+            y: 200
+        },
+        {
+            x: 160,
+            y: 200
+        }
+    ]
+
+    let target = {
+        x: 50,
+        y: 50
+    };
+
+
+    let dx = 10;
+
+    let dy = 0;
+
+    let score = 0;
+    let updateFreq = 30;
+    let gameRunning = true;
+
+    const snakeboard = document.getElementById("snakeboard");
+
+    const snakeboard_ctx = snakeboard.getContext("2d");
+ 
+    document.addEventListener("keydown", change_direction)
+    main();
+
+    function main() {
+        if (gameRunning) {
+            setTimeout(function onTick() {
+                clear_board();
+                move_snake();
+                drawSnake();
+                drawTarget();
+                drawScore();
+      
+                main();
+
+            }, updateFreq)
+        }
+    }
+
+    function check_if__head_at_target(head) {
+
+        if (head.x == target.x && head.y == target.y) {
+            score += 1;
+            snake.unshift(head);
+            target.x = Math.floor(Math.random() * 50) * 10;
+            target.y = Math.floor(Math.random() * 50) * 10;
+        }
+
+    }
+
+    function check_if_collading_with_self(head) {
+        snake.forEach(snakepart => {
+            for (var i = 1; i < snake.length; i++) {
+                if (snake[i].x == head.x && snake[i].y == head.y) {
+                    gameOver()
+                }
+            }
+        });
+    }
+
+    function check_if_at_end_of_world(head) {
+
+        if (head.x < -1 || head.x > width || head.y < -1 || head.y > height + 1) {
+            gameOver()
+        }
+    }
+
+    function gameOver() {
+        alert("Game Over, Final Score: " + score + "\n Reload page to play again.")
+        snake = [{
+                x: 200,
+                y: 200
+            },
+            {
+                x: 190,
+                y: 200
+            },
+            {
+                x: 180,
+                y: 200
+            },
+            {
+                x: 170,
+                y: 200
+            },
+            {
+                x: 160,
+                y: 200
+            }
+        ]
+
+        target = {
+            x: 50,
+            y: 50
+        };
+
+        score = 0;
+
+    }
+
+    // draw a border around the canvas
+    function clear_board() {
+        snakeboard_ctx.fillStyle = board_background;
+        snakeboard_ctx.strokestyle = board_border;
+        snakeboard_ctx.fillRect(0, 0, snakeboard.width, snakeboard.height);
+        snakeboard_ctx.strokeRect(0, 0, snakeboard.width, snakeboard.height);
+    }
+
+    function drawTarget() {
+
+        // Set the colour of the snake part
+        snakeboard_ctx.fillStyle = target_col;
+        snakeboard_ctx.fillRect(target.x, target.y, 10, 10);
+    }
+
+    function drawScore() {
+        document.getElementById("score").innerHTML = score;
+    }
+
+
+    // Draw the snake on the canvas
+    function drawSnake() {
+        // Draw each part
+        snake.forEach(drawSnakePart)
+    }
+
+    // Draw one snake part
+    function drawSnakePart(snakePart) {
+
+        // Set the colour of the snake part
+        snakeboard_ctx.fillStyle = snake_col;
+        // Set the border colour of the snake part
+        snakeboard_ctx.strokestyle = snake_border;
+        // Draw a "filled" rectangle to represent the snake part at the coordinates
+        // the part is located
+        snakeboard_ctx.fillRect(snakePart.x, snakePart.y, 10, 10);
+        // Draw a border around the snake part
+        snakeboard_ctx.strokeRect(snakePart.x, snakePart.y, 10, 10);
+    }
+
+    function change_direction(event) {
+        const LEFT_KEY = 37;
+        const RIGHT_KEY = 39;
+        const UP_KEY = 38;
+        const DOWN_KEY = 40;
+
+        const keyPressed = event.keyCode;
+        const goingUp = dy === -10;
+        const goingDown = dy === 10;
+        const goingRight = dx === 10;
+        const goingLeft = dx === -10;
+
+        if (keyPressed === LEFT_KEY && !goingRight) {
+            dx = -10;
+            dy = 0;
+        }
+
+        if (keyPressed === UP_KEY && !goingDown) {
+            dx = 0;
+            dy = -10;
+        }
+
+        if (keyPressed === RIGHT_KEY && !goingLeft) {
+            dx = 10;
+            dy = 0;
+        }
+
+        if (keyPressed === DOWN_KEY && !goingUp) {
+            dx = 0;
+            dy = 10;
+        }
+    }
+
+    function move_snake() {
+        // Create the new Snake's head
+        const head = {
+            x: snake[0].x + dx,
+            y: snake[0].y + dy
+        };
+        // Add the new head to the beginning of snake body
+
+        snake.unshift(head);
+        snake.pop();
+        check_if_collading_with_self(head);
+        check_if__head_at_target(head);
+        check_if_at_end_of_world(head);
+    }
+</script>
+
+</html>

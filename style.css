@@ -1,0 +1,96 @@
+
+ body {
+    overflow: scroll;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+
+h1 {
+    font-size: 4.3em;
+    letter-spacing: -4px;
+    font-weight: 700;
+    color: #14ad7a;
+    text-align: center;
+}
+
+.cssanimation, .cssanimation span {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+    animation-iteration-count: infinite;
+}
+
+.cssanimation span { display: inline-block }
+
+.rotate { animation-name: rotate; animation-timing-function: ease-in-out }
+@keyframes rotate {
+    from { transform: rotate(0deg) }
+    to { transform: rotate(360deg) }
+}
+.fullscreen-bg {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: auto;
+    z-index: -100;
+}
+
+.fullscreen-bg__video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+ body {
+    overflow: hidden;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+
+
+h1 {
+    font-size: 4.3em;
+    letter-spacing: -4px;
+    font-weight: 700;
+    color: #2ea038;
+    text-align: center;
+}
+
+.cssanimation, .cssanimation span {
+    
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+
+.cssanimation span { display: inline-block }
+
+.rotate { animation-name: rotate; animation-timing-function: ease-in-out }
+@keyframes rotate {
+    from { transform: rotate(0deg) }
+    to { transform: rotate(360deg) }
+}
+
+.flex-container {
+    margin: 150px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  
+  }
+  
+  .flex-container > div {
+    background: rgba(172, 172, 172, 0.2); 
+    width: 800px;
+    margin: 10px;
+    text-align: center;
+    line-height: 75px;
+    font-size: 30px;
+   
+  }
+  .buttonStyled{
+    opacity: 1.0;
+    color: rgb(63, 20, 250);
+  }
